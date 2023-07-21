@@ -1,7 +1,7 @@
 <?php
 
 $players = [
-    ['name' => 'Andy Murray', 'surfaceRating' => [ /*lawnrating*/ 2, /*clayrating*/ 2, /*hardRating*/ 2], 'weatherRating' => [/*rainRating*/ 3, /*dryRating*/ 3, /*snowRating*/ 2, /*sunnyRating*/ 8]],
+    ['name' => 'Andy Murray', 'surfaceRating' => [ /*lawnrating*/ 7, /*clayrating*/ 6, /*hardRating*/ 10], 'weatherRating' => [/*rainRating*/ 8, /*dryRating*/ 3, /*snowRating*/ 9, /*sunnyRating*/ 8]],
     ['name' => 'Roger Federer', 'surfaceRating' => [ /*lawnrating*/ 10, /*clayrating*/ 9, /*hardRating*/ 8], 'weatherRating' => [/*rainRating*/ 4, /*dryRating*/ 7, /*snowRating*/ 9, /*sunnyRating*/ 10]]
 ];
 
@@ -17,25 +17,42 @@ function generateMatchConditions(array $surfaces, array $weathers): array {
     return $matchConditions;
 }
 
-function determinePlayerScore(array $player, array $surfaces, array $weathers, array $matchConditions): int {
+function determinePlayerScore(array $player, array $matchConditions): int {
     return $player['surfaceRating'][$matchConditions[0]] * $player['weatherRating'][$matchConditions[1]];
 }
 
 $matchConditions = generateMatchConditions($surfaces, $weathers);
-$playerScore = determinePlayerScore($players[0], $surfaces, $weathers, $matchConditions);
+$playerOneScore = determinePlayerScore($players[0], $matchConditions);
+$playerTwoScore = determinePlayerScore($players[1], $matchConditions);
+
+function determineMatchWinner(array $playerOne, int $playerOneScore, array $playerTwo, int $playerTwoScore) {
+    if ($playerOneScore == $playerTwoScore) {
+        echo "DRAW";
+    } else if ($playerOneScore > $playerTwoScore) {
+        echo $playerOne['name'] . " wins";
+    } else {
+        echo $playerTwo['name'] . " wins";
+    }
+}
+
+$matchWinner = determineMatchWinner($players[0], $playerOneScore, $players[1], $playerTwoScore);
+
 
 echo "<pre>";
-var_dump ($players[0]);
-echo "</pre";
-
-echo "<pre>";
+echo "weather conditions:";
 var_dump ($matchConditions);
 echo "</pre";
 
-echo "<pre>";
-echo ($playerScore);
-echo "</pre";
+echo "<br>";
+echo "Player One Score:";
+echo ($playerOneScore);
+echo "<br";
+
+echo "<br>";
+echo "Player Two Score:";
+echo ($playerTwoScore);
+echo "<br";
 
 // echo "<pre>";
-// var_dump ($matchConditions);
+// echo $matchWinner;
 // echo "</pre";
