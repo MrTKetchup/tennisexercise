@@ -7,33 +7,22 @@ $players = [
 
 // for ($i=0; $i < (count($players))/2; $i++) maybe something like this for sorting out player matches? or could just use array_rand($players, 2)
 
-$surface = ['lawn', 'clay', 'hard'];
-$weather = ['rain', 'dry', 'snow', 'sunny'];
+$surfaces = ['lawn', 'clay', 'hard'];
+$weathers = ['rain', 'dry', 'snow', 'sunny'];
 
-function generateMatchConditions(array $surface, array $weather): array {
+function generateMatchConditions(array $surfaces, array $weathers): array {
     $matchConditions = [];
-    array_push($matchConditions, array_rand($surface, 1));
-    array_push($matchConditions, array_rand($weather, 1));
+    array_push($matchConditions, array_rand($surfaces, 1));
+    array_push($matchConditions, array_rand($weathers, 1));
     return $matchConditions;
 }
 
-function determinePlayerScore(array $player, array $surface, array $weather, array $matchConditions) {
-    $playerScore = [];
-    for ($i = 0; $i < count($surface); $i++) {
-        if ($matchConditions[0] == $i) {
-            array_push($playerScore, $player['surfaceRating'][$i]);
-        }
-    }
-    for ($j = 0; $j < count($weather); $j++) {
-        if ($matchConditions[1] == $j) {
-            array_push($playerScore, $player['weatherRating'][$j]);
-        }
-    }
-    return array_product($playerScore);
+function determinePlayerScore(array $player, array $surfaces, array $weathers, array $matchConditions): int {
+    return $player['surfaceRating'][$matchConditions[0]] * $player['weatherRating'][$matchConditions[1]];
 }
 
-$matchConditions = generateMatchConditions($surface, $weather);
-$playerScore = determinePlayerScore($players[0], $surface, $weather, $matchConditions);
+$matchConditions = generateMatchConditions($surfaces, $weathers);
+$playerScore = determinePlayerScore($players[0], $surfaces, $weathers, $matchConditions);
 
 echo "<pre>";
 var_dump ($players[0]);
@@ -44,7 +33,7 @@ var_dump ($matchConditions);
 echo "</pre";
 
 echo "<pre>";
-var_dump ($playerScore);
+echo ($playerScore);
 echo "</pre";
 
 // echo "<pre>";
